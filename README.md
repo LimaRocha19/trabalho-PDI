@@ -1,6 +1,3 @@
-# trabalho-PDI
-
-
 char buffer[18];
 byte seven_seg_digits[16][7] = { { 1,1,1,1,1,1,0 }, // = Digito 0
  { 0,1,1,0,0,0,0 }, // = Digito 1
@@ -28,6 +25,7 @@ void sevenSegWrite(byte digit) //Funcao que aciona o display
  {
    digitalWrite(pin, seven_seg_digits[digit][segCount]);
    ++pin;
+   
  }
 } 
 
@@ -70,15 +68,21 @@ void splitString(char* data) {
 
 void setLED(char* data) { 
   if ((data[0] == 'v') || (data[0] == 'V')) { 
-  
     int Ans = strtol(data+1, NULL, 10); 
     Ans = constrain(Ans,0,10); 
     Ans = 1000/Ans;
-
-    for (byte count = 0; count < 16; count++)
-    {
-       delay(Ans);
-       sevenSegWrite(count);
-    }
+    
+    int i = 0;
+    
+    do {
+      for (int count = 9; count >= 0; count--)
+      {
+        delay(Ans);
+        sevenSegWrite(count);
+        Serial.println(i);
+      }
+      i++;
+    }while(i < 10);
+    
   } 
 }
