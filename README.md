@@ -17,9 +17,14 @@ byte seven_seg_digits[16][7] = { { 1,1,1,1,1,1,0 }, // = Digito 0
 { 1,0,0,0,1,1,1 } // = Digito F
 }; 
 
+int button = 9;
+int errou = 10;
+int acertou = 11;
+
 
 int v = 1; //variavel global de velocidade
 int n = 0; //variavel global do numero
+int led = 0; //variavel global do led
 
 void sevenSegWrite(byte digit) //Funcao que aciona o display
 {
@@ -86,17 +91,32 @@ n = constrain(n,0,9);
 if ((data[0] == 'p') || (data[0] == 'P')) {
 int i = 0;
 do {
+
 for (int count = 9; count >= 0; count--)
 {
+Serial.print("Numero do led");
+Serial.println(led);
+Serial.println(count);
+Serial.println(n);
+
+if(digitalRead(button) == HIGH   && n == count)
+{
+digitalWrite(acertou,HIGH);
+Serial.println("aaaaaaaaaa");
+Serial.println(digitalRead(button));
+led++;
+}
+digitalWrite(acertou,LOW);
+
 delay(v);
 sevenSegWrite(count);
-if (count == n) { 
-digitalWrite(10, HIGH);
-delay(100);
-digitalWrite(10, LOW); 
-}
+
+Serial.print(led);
 }
 i++;
 }while(i < 9);
+
 } 
+delay(1000);
+sevenSegWrite(led);
 }
